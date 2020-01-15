@@ -32,7 +32,7 @@ const ModalSelect = (props) => {
         setDropdown(dropdown)
         setDistritos(props.distritos)
         const value = sessionStorage.getItem('escolas')
-        if(value){
+        if (value) {
             setData(JSON.parse(value))
         }
     }, [])
@@ -53,15 +53,25 @@ const ModalSelect = (props) => {
         })
         setDropdown(newState)
     }
-    function selectDistrito(dist){
-        const resultado = data.filter(esc=>{
-            return esc.Distrito === dist.Distrito
+    
+    function selectDistrito(distri) {
+        const resultado = data.filter(esc => {
+            return esc.Distrito === distri.distrito
         })
-        props.setData(resultado)
+        let final = resultado.reduce((arr,curr)=>{
+            arr["Alunos em que foram implantados"] = Number(arr["Alunos em que foram implantados"]) + Number(curr["Alunos em que foram implantados"])
+            arr["Vídeos assistidos"] = Number(arr["Vídeos assistidos"]) + Number(curr["Vídeos assistidos"])
+            arr["Questões respondidas"] = Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"])
+            return arr
+        })
+        final.Escola = distri.distrito
+        console.log(final)
+        props.setData(final)
+        props.setSelected(true)
         props.open()
     }
-    function selectEscola(escola){
-        props.setSelected(true )
+    function selectEscola(escola) {
+        props.setSelected(true)
         props.setData(escola)
         props.open()
     }
@@ -88,13 +98,13 @@ const ModalSelect = (props) => {
                             </ListItem>
                             <Collapse in={checkCollapse(dist.id)}>
                                 <ListItem
-                                button={true} onClick={()=>selectDistrito(dist)}>VER DADOS DO DISTRITO</ListItem>
+                                    button={true} onClick={() => selectDistrito(dist)}>VER DADOS DO DISTRITO</ListItem>
                                 {// eslint-disable-next-line
                                     data.map(esco => {
                                         if (esco.Distrito === dist.distrito) {
                                             return (
                                                 <List>
-                                                    <ListItem button={true} onClick={()=>selectEscola(esco)}>
+                                                    <ListItem button={true} onClick={() => selectEscola(esco)}>
                                                         {esco.Escola}
                                                     </ListItem>
                                                 </List>
