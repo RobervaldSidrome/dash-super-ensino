@@ -61,7 +61,7 @@ const ModalSelect = (props) => {
         props.open()
     }
     function selectEscola(escola){
-        props.setSelected(true)
+        props.setSelected(true )
         props.setData(escola)
         props.open()
     }
