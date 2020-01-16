@@ -75,29 +75,9 @@ class Dashboard extends Component {
 
   }
 
-  submit(data) {
-    const Headers = data[0]
-    const ParseData = []
-    for (let subset of data) {
-      let object = {}
-      for (let title in Headers) {
-        object[Headers[title]] = subset[title]
-      }
-      ParseData.push(object)
-    }
-    console.log(ParseData)
-    this.setState({ escolas: ParseData })
-    sessionStorage.setItem("escolas", JSON.stringify(ParseData))
-
-  }
 
   componentDidMount() {
     const check = JSON.parse(sessionStorage.getItem('escolas'))
-    if (check) {
-      if (this.props.match.params) {
-        console.log(this.props.match.params)
-      }
-    }
   }
 
 
