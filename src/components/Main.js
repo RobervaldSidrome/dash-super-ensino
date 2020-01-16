@@ -64,6 +64,7 @@ const styles = theme => ({
     padding: theme.spacing(2),
   },
   box: {
+    marginBottom: 40,
     height: 65
   },
   inlining: {
@@ -87,9 +88,6 @@ const styles = theme => ({
     position: 'absolute',
     top: '40%',
     left: '40%'
-  },
-  csvReader:{
-
   }
 });
 
@@ -102,9 +100,18 @@ class Main extends Component {
   };
 
   submit(data) {
-    console.log(data)
-    this.setState({escolas:data})
-    sessionStorage.setItem("escolas",JSON.stringify(data))
+    const Headers = data[0]
+    const ParseData = []
+    for(let subset of data){
+      let object = {}
+      for(let title in Headers){
+        object[Headers[title]] = subset[title]
+      }
+      ParseData.push(object)
+    }
+    console.log(ParseData)
+    this.setState({escolas:ParseData})
+    sessionStorage.setItem("escolas",JSON.stringify(ParseData))
 
   }
 
@@ -127,12 +134,6 @@ class Main extends Component {
   }
 
   render() {
-    const papaparseOptions = {
-      header: true,
-      dynamicTyping: true,
-      skipEmptyLines: true,
-      enconding: "UTF-8"
-    };
     const { classes } = this.props;
     return (
       <React.Fragment>
@@ -152,10 +153,8 @@ class Main extends Component {
                           <Typography color='secondary' gutterBottom>
                             Faça a importação de arquivo
                           </Typography>
-                     
-                          
+                          <CSVReader cssClass="csv-reader-input" label="Importar CSV " onFileLoaded={data => this.submit(data)}></CSVReader>
                         </div>
-                        <CSVReader parserOptions={papaparseOptions} cssInputClass={classes.csvReader} label="Importar CSV " onFileLoaded={data => this.submit(data)}></CSVReader>
                         <div className={classes.alignRight}>
                           <Button color='primary' variant="contained" className={classes.actionButtom}>
                             Learn more

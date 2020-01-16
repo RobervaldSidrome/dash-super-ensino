@@ -1,17 +1,15 @@
-import { CardHeader, Card, CardContent, Button, Grid, IconButton, Modal, Fade, Backdrop } from '@material-ui/core/'
+import { CardHeader, Card, CardContent, Button, Grid, IconButton, Modal } from '@material-ui/core/'
 import React, { useState, useEffect } from 'react'
 import Searchbar from '../Searchbar'
-
 import { makeStyles } from '@material-ui/styles'
 import { AddCircleOutline, Close } from '@material-ui/icons/'
 import ModalSelect from '../ModalSelect'
-import GraficoPizza from '../SimplePieChart'
 
 const styles = makeStyles({
     size: {
         width: 1245,
         margin: 20,
-        overflow: "scroll",
+        height: "40vh"
 
     },
     header: {
@@ -27,7 +25,6 @@ const styles = makeStyles({
     },
     subCards: {
         margin: 20,
-        fontSize: "48px"
 
     },
     unselected: {
@@ -41,7 +38,6 @@ const InfoCard = (props) => {
     const [distritos, setDistritos] = useState([])
     const [selected, setSelected] = useState(false)
     const [open, setOpen] = useState(false)
-    const [type, setType] = useState("")
     const classes = styles()
 
     function handleClose() {
@@ -60,12 +56,13 @@ const InfoCard = (props) => {
             })
             let id = 0
             // eslint-disable-next-line
-            array = Array.from(array)
+            array = Array.from(array).filter(arr => { if (arr) return true })
             array = array.map(dist => {
                 dist = { id: ++id, distrito: dist }
                 return dist
             })
             setDistritos(array)
+            console.log(data)
             if (data.length <= 0 && !data) setData(JSON.parse(esc))
         }
     }, [open])
@@ -73,65 +70,43 @@ const InfoCard = (props) => {
     return (<Card className={classes.size}>
         <CardHeader
             title={(
-                <div>
-                    <Grid container direction="row">
-                        <Grid style={{ alignSelf: "center" }} item xs="11">
-                            <span>{selected ? data['Escola'] : "Escolha um card para exibir"}</span>
-                        </Grid>
-                        <Grid item style={{ textAlign: "end" }} xs="1">
-                            <IconButton color="default" onClick={() => deleteCard()}>
-                                <Close></Close>
-                            </IconButton>
-                        </Grid>
-                    </Grid>
+                <div className={classes.closeButton}>
+                <span>{selected?data['Escola']:"Escolha um card para exibir"}</span>
+            <IconButton color="default" onClick={() => deleteCard()}>
+                        <Close></Close>
+                    </IconButton>
                 </div>
             )}
             className={classes.header}
         >
 
         </CardHeader>
-        <CardContent style={{ textAlign: "center", }}>
+        <CardContent style={{ textAlign: "center", height: "30vh" }}>
             {
                 selected ? (
-
-                    <Fade in={selected}>
-                        {type === "cards" ? (
-                            <Grid container justify="center">
-                                <Card className={classes.subCards}>
-                                    <CardHeader title="Alunos Implantados" />
-                                    <CardContent >{data['Alunos em que foram implantados']}</CardContent>
-                                </Card>
-                                <Card className={classes.subCards}>
-                                    <CardHeader title="Vídeos Assistidos" />
-                                    <CardContent >{data['Vídeos assistidos']}</CardContent>
-                                </Card>
-                                <Card className={classes.subCards}>
-                                    <CardHeader title="Questões Respondidas" />
-                                    <CardContent >{data['Questões respondidas']}</CardContent>
-                                </Card>
-                            </Grid>) :
-                            <div>
-                                <GraficoPizza data={data}></GraficoPizza>
-                            </div>
-                        }
-                    </Fade>
+                    <Grid container justify="center">
+                        <Card className={classes.subCards}>
+                            <CardHeader title="Alunos Implantados" />
+                            <CardContent style={{ fontSize: "48px" }}>{data['Alunos em que foram implantados']}</CardContent>
+                        </Card>
+                        <Card className={classes.subCards}>
+                            <CardHeader title="Vídeos Assistidos" />
+                            <CardContent style={{ fontSize: "48px" }}>{data['Vídeos assistidos']}</CardContent>
+                        </Card>
+                        <Card className={classes.subCards}>
+                            <CardHeader title="Questões Respondidas" />
+                            <CardContent style={{ fontSize: "48px" }}>{data['Questões respondidas']}</CardContent>
+                        </Card>
+                    </Grid>
                 ) : (
-
                         <Grid className={classes.unselected} container alignContent="center" style={{ border: "solid thick gray", borderStyle: "dashed" }} justify="center">
                             <Modal
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                                 open={open}
                                 onClose={handleClose}
-                                closeAfterTransition
-                                BackdropComponent={Backdrop}
-                                BackdropProps={{
-                                    timeout: 500,
-                                }}
                             >
-                                <Fade in={open}>
-                                    <ModalSelect setType={setType} setSelected={setSelected} setData={setData} distritos={distritos} open={handleClose} />
-                                </Fade>
+                                <ModalSelect setSelected={setSelected} setData={setData} distritos={distritos} open={handleClose} />
                             </Modal>
 
                             <IconButton onClick={() => setOpen(true)} >

@@ -22,7 +22,6 @@ const ModalSelect = (props) => {
     const [distritos, setDistritos] = useState([])
     const [data, setData] = useState([])
     const [dropdown, setDropdown] = useState([])
-    const [step, setStep] = useState(false)
 
     useEffect(() => {
         console.log(props)
@@ -54,79 +53,68 @@ const ModalSelect = (props) => {
         })
         setDropdown(newState)
     }
-
+    
     function selectDistrito(distri) {
         const resultado = data.filter(esc => {
             return esc.Distrito === distri.distrito
         })
-        let final = resultado.reduce((arr, curr) => {
+        let final = resultado.reduce((arr,curr)=>{
             arr["Alunos em que foram implantados"] = Number(arr["Alunos em que foram implantados"]) + Number(curr["Alunos em que foram implantados"])
             arr["Vídeos assistidos"] = Number(arr["Vídeos assistidos"]) + Number(curr["Vídeos assistidos"])
             arr["Questões respondidas"] = Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"])
             return arr
         })
         final.Escola = distri.distrito
-        setStep(true)
+        console.log(final)
         props.setData(final)
+        props.setSelected(true)
+        props.open()
     }
     function selectEscola(escola) {
-        setStep(true)
-        props.setData(escola)
-
-    }
-    function end(type) {
-        props.setType(type)
         props.setSelected(true)
+        props.setData(escola)
         props.open()
     }
     const classes = styles()
     return (<Paper className={classes.paper} >
         <Grid>
-            {step ? (<List>
-                <ListItem button={true} onClick={() => { end("grafico") }}>
-                    Gráfico
-                </ListItem>
-                <ListItem button={true} onClick={() => { end("cards") }}>
-                    Dados
-                </ListItem>
-            </List>) : (
-                    <List
-                        subheader={
-                            <ListSubheader component="div" id="nested-list-subheader">
-                                Distritos
+            <List
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        Distritos
                       </ListSubheader>}
-                    >
-                        {Array.from(distritos).map(dist =>
-                            (
-                                <List>
-                                    <ListItem onClick={() => { dropdownCollapse(dist.id) }} button={true} key={dist.id}>
-                                        <ListItemText >
-                                            {dist.distrito}
-                                        </ListItemText>
+            >
+                {Array.from(distritos).map(dist =>
+                    (
+                        <List>
+                            <ListItem onClick={() => { dropdownCollapse(dist.id) }} button={true} key={dist.id}>
+                                <ListItemText >
+                                    {dist.distrito}
+                                </ListItemText>
 
-                                        <IconButton style={{ float: 'right' }} edge='end' >
-                                            {checkCollapse(dist.id) ? (<ArrowDropDown />) : (<ArrowRight />)}
-                                        </IconButton>
-                                    </ListItem>
-                                    <Collapse in={checkCollapse(dist.id)}>
-                                        <ListItem
-                                            button={true} onClick={() => selectDistrito(dist)}>VER DADOS DO DISTRITO</ListItem>
-                                        {// eslint-disable-next-line
-                                            data.map(esco => {
-                                                if (esco.Distrito === dist.distrito) {
-                                                    return (
-                                                        <List>
-                                                            <ListItem button={true} onClick={() => selectEscola(esco)}>
-                                                                {esco.Escola}
-                                                            </ListItem>
-                                                        </List>
-                                                    )
-                                                }
-                                            })}
-                                    </Collapse>
-                                </List>
-                            ))}
-                    </List>)}
+                                <IconButton style={{ float: 'right' }} edge='end' >
+                                    {checkCollapse(dist.id) ? (<ArrowDropDown />) : (<ArrowRight />)}
+                                </IconButton>
+                            </ListItem>
+                            <Collapse in={checkCollapse(dist.id)}>
+                                <ListItem
+                                    button={true} onClick={() => selectDistrito(dist)}>VER DADOS DO DISTRITO</ListItem>
+                                {// eslint-disable-next-line
+                                    data.map(esco => {
+                                        if (esco.Distrito === dist.distrito) {
+                                            return (
+                                                <List>
+                                                    <ListItem button={true} onClick={() => selectEscola(esco)}>
+                                                        {esco.Escola}
+                                                    </ListItem>
+                                                </List>
+                                            )
+                                        }
+                                    })}
+                            </Collapse>
+                        </List>
+                    ))}
+            </List>
         </Grid>
     </Paper>)
 }
