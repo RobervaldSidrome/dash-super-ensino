@@ -11,7 +11,7 @@ const styles = makeStyles({
     size: {
         width: 1245,
         margin: 20,
-        overflow: "scroll",
+        overflow: "hidden",
 
     },
     header: {

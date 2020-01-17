@@ -155,15 +155,15 @@ class Topbar extends Component {
 
   }
   checkCollapse(id) {
-   const check = this.state.open.find(op=>{
+    const check = this.state.open.find(op => {
       return op.id === id
     })
     return check.state
   }
 
-  openCollapse(id){
-    const newState = this.state.open.map(op=>{
-      if(op.id===id){
+  openCollapse(id) {
+    const newState = this.state.open.map(op => {
+      if (op.id === id) {
         op.state = !op.state
       }
       return op
@@ -176,9 +176,9 @@ class Topbar extends Component {
     const { classes } = this.props;
 
     return (
-      <AppBar position="absolute" color="default" className={classes.appBar}>
+      <AppBar color="default" className={classes.appBar}>
         <Toolbar>
-          <Grid container spacing={10} alignItems="baseline">
+          <Grid container alignItems="baseline">
             <Grid item xs={12} className={classes.flex}>
               <div className={classes.inline}>
                 <Typography variant="h6" color="inherit" noWrap>
