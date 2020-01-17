@@ -5,15 +5,16 @@ import Grid from '@material-ui/core/Grid';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import { Button } from '@material-ui/core';
+import { Button, Tab, Tabs, ButtonGroup } from '@material-ui/core';
+
 
 const styles = theme => ({
     appBar: {
         position: 'relative',
         boxShadow: 'none',
-        backgroundColor:'#0091f4',
+        backgroundColor: '#0091f4',
         backgroundPosition: "200px"
-        
+
     },
     inline: {
         display: 'inline'
@@ -58,12 +59,12 @@ const styles = theme => ({
     select: {
         borderRadius: "5px",
         backgroundColor: "white",
-        color:"#565656",
+        color: "#565656",
         margin: 10,
         minWidth: "5vw",
-        minHeight:"2vh",
-        fontSize:10,
-        overflow:"hidden"
+        minHeight: "2vh",
+        fontSize: 10,
+        overflow: "hidden"
     },
     tabContainer: {
         marginLeft: 32,
@@ -75,42 +76,61 @@ const styles = theme => ({
         paddingTop: 20,
         paddingBottom: 20,
         minWidth: 'auto'
+    },
+    tab: {
+        backgroundColor: "white"
     }
 })
 
 const Searchbar = (props) => {
     const { classes } = props;
     const [distritos, setDistritos] = useState([])
+    const [tab, setTab] = useState(5)
+    const [selectDist, setSelectDist] = useState()
     useEffect(() => {
         setDistritos(props.distritos)
     }, [props]
     )
-    function setInfo(dist) {
+    useEffect(() => {
         let data = sessionStorage.getItem('escolas')
-        if (data) {
-            data = JSON.parse(data).filter(element => element['Distrito'] === dist.distrito)
-            const finalData = data.reduce((arr, curr) => {
-                arr["Alunos em que foram implantados"] = Number(arr["Alunos em que foram implantados"]) + Number(curr["Alunos em que foram implantados"])
-                arr["Vídeos assistidos"] = Number(arr["Vídeos assistidos"]) + Number(curr["Vídeos assistidos"])
-                arr["Questões respondidas"] = Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"])
-                arr["Questões corretas (Português - %)"] = (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(arr["Questões corretas (Português - %)"])) / 2
-                arr["Questões corretas (Matemática - %)"] = (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(arr["Questões corretas (Matemática - %)"])) / 2
-                arr["Engajamento"] = (parseFloat(arr["Engajamento"]) + parseFloat(arr["Engajamento"])) / 2
-                return arr
+
+        if (data && selectDist) {
+            data = JSON.parse(data).filter(element => {
+                return element['Distrito'] === selectDist.distrito && element['Serie'] === tab
             })
-            props.setDist(finalData)
+            if (data.length>0) {
+                const finalData = data.reduce((arr, curr) => {
+                    arr["Alunos em que foram implantados"] = Number(arr["Alunos em que foram implantados"]) + Number(curr["Alunos em que foram implantados"])
+                    arr["Vídeos assistidos"] = Number(arr["Vídeos assistidos"]) + Number(curr["Vídeos assistidos"])
+                    arr["Questões respondidas"] = Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"])
+                    arr["Questões corretas (Português - %)"] = (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(arr["Questões corretas (Português - %)"])) / 2
+                    arr["Questões corretas (Matemática - %)"] = (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(arr["Questões corretas (Matemática - %)"])) / 2
+                    arr["Engajamento"] = (parseFloat(arr["Engajamento"]) + parseFloat(arr["Engajamento"])) / 2
+                    return arr
+                })
+            
+    
+            finalData.ano = tab
+            return props.setDist(finalData)
+            }
+            props.setDist([0])
         }
 
-    }
+    }, [tab, selectDist])
     return (
         <AppBar className={classes.appBar}>
             <Toolbar>
-                <Grid container alignItems="baseline">
-                    <Grid item xs={12} className={classes.flex} justify="center">
+                <Grid container justify="center">
+                    <Grid container className={classes.flex} justify="center">
                         {distritos.map(dist => (
-                            <Button variant="contained" className={classes.select} onClick={() => { setInfo(dist) }}>{dist.distrito}</Button>
+                            <Button key={dist.id} variant="contained" className={classes.select} onClick={() => { setSelectDist(dist) }}>{dist.distrito}</Button>
                         ))}
+
                     </Grid>
+                    <ButtonGroup>
+                        <Button variant="contained" className={classes.tab} onClick={() => setTab(5)}>5º</Button>
+                        <Button variant="contained" className={classes.tab} onClick={() => setTab(9)}>9º</Button>
+                    </ButtonGroup>
                 </Grid>
             </Toolbar>
         </AppBar>
