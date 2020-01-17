@@ -7,7 +7,7 @@ const styles = makeStyles({
     subCards: {
         margin: 20,
         fontSize: "64px",
-        minWidth: 400,
+        minWidth: 200,
         minHeight: 200
 
     },

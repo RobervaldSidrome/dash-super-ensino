@@ -11,9 +11,9 @@ const styles = theme => ({
     appBar: {
         position: 'relative',
         boxShadow: 'none',
-        borderBottom: `1px solid ${theme.palette.grey['100']}`,
-        backgroundColor: 'E5E5E5',
-
+        backgroundColor:'#0091f4',
+        backgroundPosition: "200px"
+        
     },
     inline: {
         display: 'inline'
@@ -56,11 +56,14 @@ const styles = theme => ({
         float: 'right'
     },
     select: {
-        borderRadius: "10px",
-        backgroundColor: "#585656",
-        color: "white",
+        borderRadius: "5px",
+        backgroundColor: "white",
+        color:"#565656",
         margin: 10,
-        minWidth: 100
+        minWidth: "5vw",
+        minHeight:"2vh",
+        fontSize:10,
+        overflow:"hidden"
     },
     tabContainer: {
         marginLeft: 32,
@@ -100,12 +103,12 @@ const Searchbar = (props) => {
 
     }
     return (
-        <AppBar color="default" className={classes.appBar}>
+        <AppBar className={classes.appBar}>
             <Toolbar>
                 <Grid container alignItems="baseline">
                     <Grid item xs={12} className={classes.flex} justify="center">
                         {distritos.map(dist => (
-                            <Button className={classes.select} onClick={() => { setInfo(dist) }}>{dist.distrito}</Button>
+                            <Button variant="contained" className={classes.select} onClick={() => { setInfo(dist) }}>{dist.distrito}</Button>
                         ))}
                     </Grid>
                 </Grid>

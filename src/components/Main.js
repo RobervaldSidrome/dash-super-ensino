@@ -12,7 +12,7 @@ import CSVReader from 'react-csv-reader';
 
 import Topbar from './Topbar';
 
-const backgroundShape = require('../images/shape.svg');
+const backgroundShape = require('../images/BACKGROUND.png');
 
 const styles = theme => ({
   root: {
@@ -21,8 +21,8 @@ const styles = theme => ({
     overflow: 'hidden',
     background: `url(${backgroundShape}) no-repeat`,
     backgroundSize: 'cover',
-    backgroundPosition: '0 400px',
-    paddingBottom: 200
+    backgroundPosition: '0 0px',
+    paddingBottom: 800
   },
   grid: {
     width: 1200,

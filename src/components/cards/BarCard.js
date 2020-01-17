@@ -23,7 +23,6 @@ const BarCard = (props) => {
     return (
         <Card style={{margin:20}}>
             <CardHeader title="Questões Corretas da Prova Brasil">
-
             </CardHeader>
             <CardContent style={{ minWidth: 600 }}>
                 <ResponsiveContainer minWidth="250" width="100%" height={250}>

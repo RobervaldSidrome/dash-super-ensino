@@ -26,7 +26,7 @@ import BarCard from './cards/BarCard';
 const numeral = require('numeral');
 numeral.defaultFormat('0,000');
 
-const backgroundShape = require('../images/shape.svg');
+const backgroundShape = require('../images/BACKGROUND.png');
 
 const styles = theme => ({
   root: {
@@ -35,8 +35,8 @@ const styles = theme => ({
     overflow: 'auto',
     background: `url(${backgroundShape}) no-repeat`,
     backgroundSize: 'cover',
-    backgroundPosition: '0 400px',
-    paddingBottom: 200
+    backgroundPosition: '0 0px',
+    paddingBottom: 400
   },
   grid: {
     width: 1400,
