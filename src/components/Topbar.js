@@ -172,7 +172,7 @@ class Topbar extends Component {
   }
 
   render() {
-
+    const logo = require('../images/logo-super-aluno-horz.svg')
     const { classes } = this.props;
 
     return (
@@ -221,11 +221,14 @@ class Topbar extends Component {
                         ))}
                     </List> 
                   </Drawer>*/}
-                  <IconButton onClick={this.sideMenuOpen}>
+                  {/* <IconButton onClick={this.sideMenuOpen}>
                     <MenuIcon />
-                  </IconButton>
+                  </IconButton> */}
+
                   <Link to='/' className={classes.link}>
-                    <span className={classes.tagline}>Dashboard Super Ensino</span>
+                    <IconButton>
+                      <img width={160} src={logo} alt="Super Ensino"></img>
+                    </IconButton>
                   </Link>
                 </Typography>
               </div>
