@@ -118,9 +118,11 @@ const Searchbar = (props) => {
                     "Engajamento": (parseFloat(arr["Engajamento"]) + parseFloat(curr["Engajamento"].replace(',','.')))
                 }
             })
+            if(finalData.length>1){
             finalData['Engajamento'] = (finalData['Engajamento']/data.length).toFixed(2)
             finalData['Questões corretas (Português - %)'] = (finalData['Questões corretas (Português - %)']/data.length).toFixed(2)
             finalData['Questões corretas (Matemática - %)'] = (finalData['Questões corretas (Matemática - %)']/data.length).toFixed(2)
+             }
             finalData.ano = tab
             console.log(finalData['Engajamento'],finalData['Questões corretas (Português - %)'],finalData['Questões corretas (Matemática - %)'])
             return props.setDist(finalData)
