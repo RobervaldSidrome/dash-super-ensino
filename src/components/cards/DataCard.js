@@ -25,7 +25,6 @@ const DataCard = (props) => {
     const [data,setData] = useState(0)
     const [title,setTitle] = useState("")
     useEffect(()=>{
-        console.log(props)
         setData(props.data)
         setTitle(props.title)
     },[props])
