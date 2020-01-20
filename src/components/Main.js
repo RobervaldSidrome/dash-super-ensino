@@ -105,6 +105,7 @@ class Main extends Component {
     console.log(data)
     this.setState({escolas:data})
     sessionStorage.setItem("escolas",JSON.stringify(data))
+    this.props.history.push('/dashboard')
 
   }
 
@@ -158,7 +159,7 @@ class Main extends Component {
                         <CSVReader parserOptions={papaparseOptions} cssInputClass={classes.csvReader} label="Importar CSV " onFileLoaded={data => this.submit(data)}></CSVReader>
                         <div className={classes.alignRight}>
                           <Button color='primary' variant="contained" className={classes.actionButtom}>
-                            Learn more
+                            Apagar
                           </Button>
                         </div>
                       </div>

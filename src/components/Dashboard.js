@@ -8,6 +8,7 @@ import Searchbar from './Searchbar';
 import DataCard from './cards/DataCard';
 import PieCard from './cards/PieCard';
 import BarCard from './cards/BarCard';
+import { Hidden } from '@material-ui/core';
 
 
 const numeral = require('numeral');
@@ -97,7 +98,9 @@ const Dashboard = (props) => {
     <React.Fragment>
       <CssBaseline />
       <Topbar currentPath={currentPath} />
-      <Searchbar distritos={distritos} data={data} setDist={setData} />
+      <Hidden xsUp={!distritos.length}>
+        <Searchbar distritos={distritos} data={data} setDist={setData} />
+      </Hidden>
       <div className={classes.root}>
         <Grid container justify="center">
           <Grid container direction="row" justify="center" className={classes.grid}>
