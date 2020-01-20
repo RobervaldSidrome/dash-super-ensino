@@ -87,44 +87,40 @@ const Searchbar = (props) => {
     const { classes } = props;
     const [distritos, setDistritos] = useState([])
     const [tab, setTab] = useState(0)
-    const [selectDist, setSelectDist] = useState()
+    const [selectDist, setSelectDist] = useState("")
 
     useEffect(() => {
         setDistritos(props.distritos)
-    }, [props]
+    }, [props.distritos]
     )
     useEffect(() => {
         let data = sessionStorage.getItem('escolas')
         data = data ? JSON.parse(data) : []
-        if (selectDist) {
-            data = data.filter(element => {
-
-                return element['Distrito'] === selectDist.distrito && element['Serie'] === tab
-            })
-        }
+        data = data.filter(element => {
+            return (element['Distrito'] === selectDist.distrito || !selectDist) && (element['Serie'] === tab || tab === 0)
+        })
         if (data.length > 0) {
-            const finalData = data.reduce((arr, curr,index) => {
-                if(index === 1){
-                    arr['Engajamento'] = arr['Engajamento'].replace(',','.')
-                    arr['Questões corretas (Português - %)'] = arr['Questões corretas (Português - %)'].toString().replace(',','.')
-                    arr['Questões corretas (Matemática - %)'] = arr['Questões corretas (Matemática - %)'].toString().replace(',','.')
+            const finalData = data.reduce((arr, curr, index) => {
+                if (index === 1) {
+                    arr['Engajamento'] = arr['Engajamento'].replace(',', '.')
+                    arr['Questões corretas (Português - %)'] = arr['Questões corretas (Português - %)'].toString().replace(',', '.')
+                    arr['Questões corretas (Matemática - %)'] = arr['Questões corretas (Matemática - %)'].toString().replace(',', '.')
                 }
                 return {
                     "Alunos em que foram implantados": Number(arr["Alunos em que foram implantados"]) + Number(curr["Alunos em que foram implantados"]),
                     "Vídeos assistidos": Number(arr["Vídeos assistidos"]) + Number(curr["Vídeos assistidos"]),
                     "Questões respondidas": Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"]),
-                    "Questões corretas (Português - %)": (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(curr["Questões corretas (Português - %)"].toString().replace(',','.'))),
-                    "Questões corretas (Matemática - %)": (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(curr["Questões corretas (Matemática - %)"].toString().replace(',','.'))),
-                    "Engajamento": (parseFloat(arr["Engajamento"]) + parseFloat(curr["Engajamento"].replace(',','.')))
+                    "Questões corretas (Português - %)": (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(curr["Questões corretas (Português - %)"].toString().replace(',', '.'))),
+                    "Questões corretas (Matemática - %)": (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(curr["Questões corretas (Matemática - %)"].toString().replace(',', '.'))),
+                    "Engajamento": (parseFloat(arr["Engajamento"]) + parseFloat(curr["Engajamento"].replace(',', '.')))
                 }
             })
-            if(data.length>1){
-            finalData['Engajamento'] = (finalData['Engajamento']/data.length).toFixed(2)
-            finalData['Questões corretas (Português - %)'] = (finalData['Questões corretas (Português - %)']/data.length).toFixed(2)
-            finalData['Questões corretas (Matemática - %)'] = (finalData['Questões corretas (Matemática - %)']/data.length).toFixed(2)
-             }
+            if (data.length > 1) {
+                finalData['Engajamento'] = (finalData['Engajamento'] / data.length).toFixed(2)
+                finalData['Questões corretas (Português - %)'] = (finalData['Questões corretas (Português - %)'] / data.length).toFixed(2)
+                finalData['Questões corretas (Matemática - %)'] = (finalData['Questões corretas (Matemática - %)'] / data.length).toFixed(2)
+            }
             finalData.ano = tab
-            console.log(finalData['Engajamento'],finalData['Questões corretas (Português - %)'],finalData['Questões corretas (Matemática - %)'])
             return props.setDist(finalData)
         }
         return props.setDist(0)
@@ -137,13 +133,13 @@ const Searchbar = (props) => {
                     <Grid container className={classes.flex} justify="center">
                         <ButtonGroup className={classes.select}>
                             {distritos.map(dist => (
-                                <ToggleButton value={dist} selected={selectDist === dist} key={dist.id} onClick={() => { setSelectDist(dist) }}>{dist.distrito}</ToggleButton>
+                                <ToggleButton value={dist} selected={selectDist === dist} key={dist.id} onClick={() => { selectDist === dist ? setSelectDist("") : setSelectDist(dist) }}>{dist.distrito}</ToggleButton>
                             ))}
                         </ButtonGroup>
                     </Grid>
                     <ButtonGroup className={classes.tab}>
-                        <ToggleButton selected={tab === 5} value={5} onClick={() => setTab(5)}>5º</ToggleButton>
-                        <ToggleButton selected={tab === 9} value={9} onClick={() => setTab(9)}>9º</ToggleButton>
+                        <ToggleButton selected={tab === 5} value={5} onClick={() => tab === 5 ? setTab(0) : setTab(5)}>5º</ToggleButton>
+                        <ToggleButton selected={tab === 9} value={9} onClick={() => tab === 9 ? setTab(0) : setTab(9)}>9º</ToggleButton>
                     </ButtonGroup>
                 </Grid>
             </Toolbar>

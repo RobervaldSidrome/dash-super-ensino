@@ -55,6 +55,7 @@ const Dashboard = (props) => {
   const [distritos, setDistritos] = useState([])
 
 
+
   useEffect(() => {
     const esc = sessionStorage.getItem('escolas')
     if (esc) {
@@ -68,7 +69,6 @@ const Dashboard = (props) => {
         dist = { id: ++id, distrito: dist }
         return dist
       })
-      setData(JSON.parse(esc))
       setDistritos(array)
     }
   }, [])
