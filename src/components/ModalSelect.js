@@ -25,7 +25,7 @@ const ModalSelect = (props) => {
     const [step, setStep] = useState(false)
 
     useEffect(() => {
-        console.log(props)
+
         const dropdown = []
         props.distritos.forEach(dist => {
             dropdown.push({ id: dist.id, state: false })
@@ -65,9 +65,7 @@ const ModalSelect = (props) => {
             arr["Questões respondidas"] = Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"])
             arr["Questões corretas (Português - %)"] = (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(arr["Questões corretas (Português - %)"]))/2
             arr["Questões corretas (Matemática - %)"] = (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(arr["Questões corretas (Matemática - %)"]))/2
-            arr["Engajamento"] = (parseFloat(arr["Engajamento"]) + parseFloat(arr["Engajamento"]))/2
-            console.log( arr["Engajamento"], arr["Questões corretas (Matemática - %)"],arr["Questões corretas (Português - %)"])
-            
+            arr["Engajamento"] = (parseFloat(arr["Engajamento"]) + parseFloat(arr["Engajamento"]))/2   
             return arr
         })
         final.Escola = distri.distrito
