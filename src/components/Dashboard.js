@@ -81,7 +81,7 @@ const Dashboard = (props) => {
         dist = { id: ++id, distrito: dist }
         return dist
       })
-      console.log(array)
+      console.log(JSON.parse(esc))
       setData(JSON.parse(esc))
       setDistritos(array)
     }

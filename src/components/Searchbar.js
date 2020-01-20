@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { Button, Tab, Tabs, ButtonGroup } from '@material-ui/core';
+import { ToggleButton } from '@material-ui/lab'
 
 
 const styles = theme => ({
@@ -87,6 +88,7 @@ const Searchbar = (props) => {
     const [distritos, setDistritos] = useState([])
     const [tab, setTab] = useState(5)
     const [selectDist, setSelectDist] = useState()
+    const [selectedAno, setSelectedAno] = useState(true)
     useEffect(() => {
         setDistritos(props.distritos)
     }, [props]
@@ -98,20 +100,20 @@ const Searchbar = (props) => {
             data = JSON.parse(data).filter(element => {
                 return element['Distrito'] === selectDist.distrito && element['Serie'] === tab
             })
-            if (data.length>0) {
+            if (data.length > 0) {
                 const finalData = data.reduce((arr, curr) => {
-                    arr["Alunos em que foram implantados"] = Number(arr["Alunos em que foram implantados"]) + Number(curr["Alunos em que foram implantados"])
-                    arr["Vídeos assistidos"] = Number(arr["Vídeos assistidos"]) + Number(curr["Vídeos assistidos"])
-                    arr["Questões respondidas"] = Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"])
-                    arr["Questões corretas (Português - %)"] = (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(arr["Questões corretas (Português - %)"])) / 2
-                    arr["Questões corretas (Matemática - %)"] = (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(arr["Questões corretas (Matemática - %)"])) / 2
-                    arr["Engajamento"] = (parseFloat(arr["Engajamento"]) + parseFloat(arr["Engajamento"])) / 2
-                    return arr
+
+                    return {
+                        "Alunos em que foram implantados": Number(arr["Alunos em que foram implantados"]) + Number(curr["Alunos em que foram implantados"]),
+                        "Vídeos assistidos": Number(arr["Vídeos assistidos"]) + Number(curr["Vídeos assistidos"]),
+                        "Questões respondidas": Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"]),
+                        "Questões corretas (Português - %)": (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(curr["Questões corretas (Português - %)"])) / 2,
+                        "Questões corretas (Matemática - %)": (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(curr["Questões corretas (Matemática - %)"])) / 2,
+                        "Engajamento": (parseFloat(arr["Engajamento"]) + parseFloat(curr["Engajamento"])) / 2
+                    }
                 })
-            
-    
-            finalData.ano = tab
-            return props.setDist(finalData)
+                finalData.ano = tab
+                return props.setDist(finalData)
             }
             props.setDist([0])
         }
@@ -122,14 +124,15 @@ const Searchbar = (props) => {
             <Toolbar>
                 <Grid container justify="center">
                     <Grid container className={classes.flex} justify="center">
+
                         {distritos.map(dist => (
-                            <Button key={dist.id} variant="contained" className={classes.select} onClick={() => { setSelectDist(dist) }}>{dist.distrito}</Button>
+                            <ToggleButton selected={selectDist === dist} key={dist.id} className={classes.select} onClick={() => { setSelectDist(dist) }}>{dist.distrito}</ToggleButton>
                         ))}
 
                     </Grid>
                     <ButtonGroup>
-                        <Button variant="contained" className={classes.tab} onClick={() => setTab(5)}>5º</Button>
-                        <Button variant="contained" className={classes.tab} onClick={() => setTab(9)}>9º</Button>
+                        <ToggleButton selected={tab == 5} variant="contained" className={classes.tab} onClick={() => setTab(5)}>5º</ToggleButton>
+                        <ToggleButton selected={tab == 9} variant="contained" className={classes.tab} onClick={() => setTab(9)}>9º</ToggleButton>
                     </ButtonGroup>
                 </Grid>
             </Toolbar>
