@@ -9,10 +9,6 @@ import { Card, CardContent, CardHeader } from '@material-ui/core'
 
 const PieCard = (props) => {
 
-    // const engajamento = parseFloat(props.data['Engajamento'])
-    // const questoesPT = parseFloat(props.data['Questões corretas (Português - %)'])
-    // const questoesMAT = parseFloat(props.data['Questões corretas (Matemática - %)'])
-    // const dataBar = [{ name: "Questões Corretas", "Português": questoesPT, "Matemática": questoesMAT }]
     const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = ({
         cx, cy, midAngle, innerRadius, outerRadius, percent, index,
@@ -20,8 +16,6 @@ const PieCard = (props) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);
         const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-
         return (
             <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
                 {`${(percent * 100).toFixed(0)}%`}

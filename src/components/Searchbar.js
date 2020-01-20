@@ -86,7 +86,7 @@ const styles = theme => ({
 const Searchbar = (props) => {
     const { classes } = props;
     const [distritos, setDistritos] = useState([])
-    const [tab, setTab] = useState(5)
+    const [tab, setTab] = useState(0)
     const [selectDist, setSelectDist] = useState()
 
     useEffect(() => {
@@ -101,20 +101,28 @@ const Searchbar = (props) => {
 
                 return element['Distrito'] === selectDist.distrito && element['Serie'] === tab
             })
-            console.log(data)
         }
         if (data.length > 0) {
-            const finalData = data.reduce((arr, curr) => {
+            const finalData = data.reduce((arr, curr,index) => {
+                if(index === 1){
+                    arr['Engajamento'] = arr['Engajamento'].replace(',','.')
+                    arr['Questões corretas (Português - %)'] = arr['Questões corretas (Português - %)'].toString().replace(',','.')
+                    arr['Questões corretas (Matemática - %)'] = arr['Questões corretas (Matemática - %)'].toString().replace(',','.')
+                }
                 return {
                     "Alunos em que foram implantados": Number(arr["Alunos em que foram implantados"]) + Number(curr["Alunos em que foram implantados"]),
                     "Vídeos assistidos": Number(arr["Vídeos assistidos"]) + Number(curr["Vídeos assistidos"]),
                     "Questões respondidas": Number(arr["Questões respondidas"]) + Number(curr["Questões respondidas"]),
-                    "Questões corretas (Português - %)": (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(curr["Questões corretas (Português - %)"])) / 2,
-                    "Questões corretas (Matemática - %)": (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(curr["Questões corretas (Matemática - %)"])) / 2,
-                    "Engajamento": (parseFloat(arr["Engajamento"]) + parseFloat(curr["Engajamento"])) / 2
+                    "Questões corretas (Português - %)": (parseFloat(arr["Questões corretas (Português - %)"]) + parseFloat(curr["Questões corretas (Português - %)"].toString().replace(',','.'))),
+                    "Questões corretas (Matemática - %)": (parseFloat(arr["Questões corretas (Matemática - %)"]) + parseFloat(curr["Questões corretas (Matemática - %)"].toString().replace(',','.'))),
+                    "Engajamento": (parseFloat(arr["Engajamento"]) + parseFloat(curr["Engajamento"].replace(',','.')))
                 }
             })
+            finalData['Engajamento'] = (finalData['Engajamento']/data.length).toFixed(2)
+            finalData['Questões corretas (Português - %)'] = (finalData['Questões corretas (Português - %)']/data.length).toFixed(2)
+            finalData['Questões corretas (Matemática - %)'] = (finalData['Questões corretas (Matemática - %)']/data.length).toFixed(2)
             finalData.ano = tab
+            console.log(finalData['Engajamento'],finalData['Questões corretas (Português - %)'],finalData['Questões corretas (Matemática - %)'])
             return props.setDist(finalData)
         }
         return props.setDist(0)
