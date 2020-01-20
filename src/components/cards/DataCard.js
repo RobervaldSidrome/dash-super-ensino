@@ -25,7 +25,7 @@ const DataCard = (props) => {
     const [data,setData] = useState(0)
     const [title,setTitle] = useState("")
     useEffect(()=>{
-        setData(props.data)
+        setData(props.data.toLocaleString())
         setTitle(props.title)
     },[props])
 
