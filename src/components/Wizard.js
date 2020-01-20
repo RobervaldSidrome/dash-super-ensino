@@ -465,7 +465,7 @@ PLEASE NOTE: We reserve the right, at our sole discretion, to change, modify or 
                           <Typography variant="body1" gutterBottom>
                             We have now a positive response
                           </Typography>
-                          <Button fullWidth variant='outlined'>
+                          <Button variant='outlined'>
                             Download the service invoice or whatever
                           </Button>
                         </Grid>

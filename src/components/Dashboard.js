@@ -1,23 +1,10 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/styles/withStyles';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Slider from '@material-ui/core/Slider';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import SimpleLineChart from './SimpleLineChart';
-
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import Loading from './common/Loading';
-import CSVReader from 'react-csv-reader'
 import Topbar from './Topbar';
 import Searchbar from './Searchbar';
-import InfoCard from './cards/InfoCards';
-import { IconButton } from '@material-ui/core';
-import { PlusOneOutlined, Close } from '@material-ui/icons';
 import DataCard from './cards/DataCard';
 import PieCard from './cards/PieCard';
 import BarCard from './cards/BarCard';
@@ -40,7 +27,7 @@ const styles = theme => ({
   },
   grid: {
     width: 1400,
-    minHeight:"50vh",
+    minHeight: "50vh",
     [theme.breakpoints.down('sm')]: {
       width: 'calc(100% - 20px)'
     }
@@ -81,11 +68,11 @@ const Dashboard = (props) => {
         dist = { id: ++id, distrito: dist }
         return dist
       })
-      console.log(JSON.parse(esc))
       setData(JSON.parse(esc))
       setDistritos(array)
     }
   }, [])
+
   // addCard() {
   //   const index = ++this.state.index
   //   const cards = this.state.cards
@@ -113,11 +100,11 @@ const Dashboard = (props) => {
       <Searchbar distritos={distritos} data={data} setDist={setData} />
       <div className={classes.root}>
         <Grid container justify="center">
-          <Grid  container direction="row" container alignItems="center" justify="center"  className={classes.grid}>
+          <Grid container direction="row" justify="center" className={classes.grid}>
             <DataCard title="Alunos Implantados" data={data['Alunos em que foram implantados'] ? data['Alunos em que foram implantados'] : 0} />
             <DataCard title="Vídeos Assistidos" data={data['Vídeos assistidos'] ? data['Vídeos assistidos'] : 0} />
             <DataCard title="Questões Respondidas" data={data['Questões respondidas'] ? data['Questões respondidas'] : 0} />
-            <PieCard className={classes.chartCard} data={data['Engajamento']?data['Engajamento']:0} />
+            <PieCard className={classes.chartCard} data={data['Engajamento'] ? data['Engajamento'] : 0} />
             <BarCard portugues={data['Questões corretas (Português - %)'] ? data['Questões corretas (Português - %)'] : 0} matematica={data['Questões corretas (Matemática - %)'] ? data['Questões corretas (Matemática - %)'] : 0} />
           </Grid>
         </Grid>

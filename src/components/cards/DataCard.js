@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useEffect,useState } from 'react'
 import { makeStyles } from "@material-ui/styles"
 import { Card, CardHeader, CardContent } from "@material-ui/core"
 
@@ -22,12 +22,18 @@ const styles = makeStyles({
 
 const DataCard = (props) => {
     const classes = styles()
-    const [data, setData] = useState({})
+    const [data,setData] = useState(0)
+    const [title,setTitle] = useState("")
+    useEffect(()=>{
+        console.log(props)
+        setData(props.data)
+        setTitle(props.title)
+    },[props])
 
     return (
         <Card className={classes.subCards}>
-            <CardHeader className={classes.title} title={props.title}/>
-            <CardContent className={classes.content}>{props.data}</CardContent>
+            <CardHeader className={classes.title} title={title}/>
+            <CardContent className={classes.content}>{data}</CardContent>
         </Card>)
 }
 
