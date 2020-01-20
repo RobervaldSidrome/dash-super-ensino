@@ -1,4 +1,4 @@
-import React,  { Component } from 'react';
+import React, { Component } from 'react';
 import withStyles from '@material-ui/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,8 +9,10 @@ import Button from '@material-ui/core/Button';
 import InstructionDialog from './dialogs/InstructionDialog';
 import SwipeDialog from './dialogs/SwipeDialog'
 import CSVReader from 'react-csv-reader';
-
 import Topbar from './Topbar';
+import { Hidden } from '@material-ui/core';
+import { CheckCircleOutline } from '@material-ui/icons';
+import { green } from '@material-ui/core/colors';
 
 const backgroundShape = require('../images/BACKGROUND.png');
 
@@ -64,7 +66,7 @@ const styles = theme => ({
     padding: theme.spacing(2),
   },
   box: {
-    height: 65
+
   },
   inlining: {
     display: 'inline-block',
@@ -88,7 +90,7 @@ const styles = theme => ({
     top: '40%',
     left: '40%'
   },
-  csvReader:{
+  csvReader: {
 
   }
 });
@@ -96,34 +98,43 @@ const styles = theme => ({
 class Main extends Component {
 
   state = {
-    learnMoredialog: false,
-    getStartedDialog: false,
-    escolas: []
+    hasFile: false,
+    escolas: [],
+
   };
 
   submit(data) {
-    this.setState({escolas:data})
-    sessionStorage.setItem("escolas",JSON.stringify(data))
+    this.setState({ escolas: data })
+    sessionStorage.setItem("escolas", JSON.stringify(data))
     this.props.history.push('/dashboard')
 
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const file = sessionStorage.getItem('escolas')
+    if (file) {
+      this.setState({ hasFile: true })
+    }
+  }
 
   openDialog = (event) => {
-    this.setState({learnMoredialog: true});
+    this.setState({ learnMoredialog: true });
   }
 
   dialogClose = (event) => {
-    this.setState({learnMoredialog: false});
+    this.setState({ learnMoredialog: false });
   }
 
   openGetStartedDialog = (event) => {
-    this.setState({getStartedDialog: true});
+    this.setState({ getStartedDialog: true });
   }
 
   closeGetStartedDialog = (event) => {
-    this.setState({getStartedDialog: false});
+    this.setState({ getStartedDialog: false });
+  }
+  clear(){
+    this.setState({hasFile:false})
+    sessionStorage.clear()
   }
 
   render() {
@@ -141,28 +152,39 @@ class Main extends Component {
         <div className={classes.root}>
           <Grid container justify="center">
             <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
-  
-              
-              
+
+
+
               <Grid container item xs={12}>
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                      <div>
+                <Grid item xs={12}>
+                  <Paper className={classes.paper}>
+                    <div>
+                      <Hidden xsUp={this.state.hasFile}>
                         <div className={classes.box}>
                           <Typography color='secondary' gutterBottom>
                             Faça a importação de arquivo
                           </Typography>
-                     
-                          
                         </div>
                         <CSVReader parserOptions={papaparseOptions} cssInputClass={classes.csvReader} label="Importar CSV " onFileLoaded={data => this.submit(data)}></CSVReader>
-                        <div className={classes.alignRight}>
-                          <Button onClick={()=> sessionStorage.clear()} color='primary' variant="contained" className={classes.actionButtom}>
-                            Apagar
-                          </Button>
+                      </Hidden>
+                      <Hidden xsUp={!this.state.hasFile}>
+                        <div style={{ textAlign: "center" }} className={classes.box}>
+
+                          <Typography align="center" variant="h4">
+                            Arquivo Carregado
+                          </Typography>
+                          <div>
+                            <CheckCircleOutline style={{ fontSize: 100, marginTop: 50, color: green[500] }} />
+                          </div>
                         </div>
+                      </Hidden>
+                      <div className={classes.alignRight}>
+                        <Button onClick={() => this.clear()} color='primary' variant="contained" className={classes.actionButtom}>
+                          Apagar
+                          </Button>
                       </div>
-                    </Paper>
+                    </div>
+                  </Paper>
                 </Grid>
               </Grid>
             </Grid>
